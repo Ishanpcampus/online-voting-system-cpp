@@ -1,0 +1,10 @@
+*.o
+*.exe
+*.out
+*.log
+*.swp
+*.bak
+/build/
+cmake-build-debug/
+.vscode/
+
