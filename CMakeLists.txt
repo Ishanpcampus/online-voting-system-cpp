@@ -5,7 +5,10 @@ set(CMAKE_CXX_STANDARD 17)
 
 add_executable(OnlineVotingSystem
     main.cpp
-    Voter.cpp
-    Candidate.cpp
-    ElectionSystem.cpp
+    Voter.h
+    Candidate.h
+    ElectionSystem.h
+        Voter.cpp
+        Candidate.cpp
+        ElectionSystem.cpp
 )
