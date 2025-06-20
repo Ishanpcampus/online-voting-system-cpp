@@ -4,6 +4,9 @@
 int main() {
     ElectionSystem system;
     int choice;
+    system.loadVoters();
+    system.loadCandidates();
+
 
     do {
         std::cout << "\n=== Online Voting System ===\n";

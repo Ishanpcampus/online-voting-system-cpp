@@ -11,6 +11,9 @@ private:
     std::vector<Candidate> candidates;
     public:
     void registerVoter();
+    void loadVoters();
+    void loadCandidates();
+
     void registerCandidate();
     void unregisterCandidate();
     void login();

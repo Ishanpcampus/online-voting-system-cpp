@@ -3,7 +3,8 @@
 //
 #include "ElectionSystem.h"
 #include <iostream>
-
+#include <fstream>
+#include <sstream>
 void ElectionSystem::registerVoter() {
     std::cout << "Registering voter..." << std::endl;
     std::string name,id,password;
@@ -15,6 +16,14 @@ void ElectionSystem::registerVoter() {
     std::cin>>password;
     voters.push_back(Voter(name,id,password));
     std::cout<<"Voter registered"<<std::endl;
+    std::ofstream fout("data/voters.txt", std::ios::app);
+    if (fout.is_open()) {
+        fout << name << " " << id << " " << password << " " << 0 << "\n";
+        fout.close();
+    } else {
+        std::cout << "Error: Could not open voters.txt to save data\n";
+    }
+
 }
 void ElectionSystem::registerCandidate() {
     std::cout << "Registering candidate..." << std::endl;
@@ -24,8 +33,44 @@ void ElectionSystem::registerCandidate() {
     std::cout<<"Please enter candidate ID: ";
     std::cin>>id;
     candidates.push_back(Candidate(name,id));
+    std::ofstream fout("data/candidates.txt", std::ios::app);
+    if (fout.is_open()) {
+        fout << name << " " << id << " " << 0 << "\n";
+        fout.close();
+    } else {
+        std::cout << "Error: Could not open candidates.txt\n";
+    }
+
     std::cout<<"Candidate registered"<<std::endl;
 }
+void ElectionSystem::loadVoters() {
+    std::ifstream fin("data/voters.txt");
+    if (!fin.is_open()) return;
+
+    std::string name, id, password;
+    int voted;
+    while (fin >> name >> id >> password >> voted) {
+        Voter v(name, id, password);
+        if (voted) v.markVoted();
+        voters.push_back(v);
+    }
+    fin.close();
+}
+
+void ElectionSystem::loadCandidates() {
+    std::ifstream fin("data/candidates.txt");
+    if (!fin.is_open()) return;
+
+    std::string name, id;
+    int voteCount;
+    while (fin >> name >> id >> voteCount) {
+        Candidate c(name, id);
+        for (int i = 0; i < voteCount; ++i) c.addVote();
+        candidates.push_back(c);
+    }
+    fin.close();
+}
+
 void ElectionSystem::vote() {
     std::string id,password,CandidateID;
     std::cout<<"Enter your voter ID: ";
